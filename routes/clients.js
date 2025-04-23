@@ -5,7 +5,7 @@ var router = express.Router();
 
 /* products listing. */
 router.post("/create",clients.create)
-router.get('/getAllClients',auth,clients.getAllClients)
+router.get('/getAllClients',clients.getAllClients)
 // authorize route to roll
 
 module.exports = router;

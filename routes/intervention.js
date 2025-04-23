@@ -7,6 +7,8 @@ var router = express.Router();
 router.post("/create",interventions.create)
 router.get('/getAllInterventions',interventions.getAllInterventions)
 router.get('/getOne/:id',interventions.getOne)
+router.put('/updateIntervention/:id',interventions.updateIntervention)
+router.put('/transferMaterial',interventions.transfer)
 // authorize route to roll
 
 module.exports = router;

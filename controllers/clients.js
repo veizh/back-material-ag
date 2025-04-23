@@ -12,11 +12,8 @@ exports.create = async (req,res)=>{
   }
 
 exports.getAllClients= async (req,res)=>{
-  if (await accesControler("employe", user.role)) {
     const clients = await clientSchema.find();
 
     return res.status(200).json(clients);
-  } else {
-    return res.status(403).json({ msg: "u dont have acces to this" });
-  }
+  
 }

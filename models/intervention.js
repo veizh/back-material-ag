@@ -4,12 +4,15 @@ const mongooseUniqueValidator = require('mongoose-unique-validator')
 
 var interventionSchemas = mongoose.Schema({
     clientName: { type: String,required:true},
+    groupName: { type: String,default:"INDEPENDANT",required:true},
     location:{type:String,required:true},
-    State:{type:String,required:false,default:"En cours"},
+    ville:{type:String,required:true},
+    codePostal:{type:String,required:true},
+    state:{type:String,default:"En cours"},
     materials:{type:Array,default:[]},
     contractNumber:{type:String,default:"XXXXXX"},
     startingDate:{type:String,require:true},
-    endDate:{type:String,require:false}
+    endingDate:{type:String,require:false}
     })
     interventionSchemas.plugin(mongooseUniqueValidator)
 

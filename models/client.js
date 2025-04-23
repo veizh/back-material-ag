@@ -4,8 +4,10 @@ const mongooseUniqueValidator = require('mongoose-unique-validator')
 
 var clientSchema = mongoose.Schema({
     clientName: { type: String, required: true },
-    contractNumber: { type: String, unique: true, required: false },
-    groupName: { type: String, required: false },
+    groupName: { type: String, required: true, default:"INDEPENDANT" },
+    location:{type: String, required: true},
+    codePostal:{type: String, required: true},
+    ville:{type: String, required: true}
     })
     clientSchema.plugin(mongooseUniqueValidator)
 
