@@ -2,7 +2,7 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
-
+var transfersRouter = require('./routes/transfers')
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var clientsRouter = require('./routes/clients');
@@ -31,6 +31,7 @@ app.use('/', indexRouter);
 app.use('/usersTracking', usersRouter)
 app.use('/clients', clientsRouter)
 app.use('/interventions', interventionsRouter)
+app.use('/transfers',transfersRouter )
 
 
 

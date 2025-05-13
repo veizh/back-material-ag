@@ -36,9 +36,11 @@ console.log(user);
 }
 exports.verifyJWT = async (req, res) => {
     try {
-      const token = req.headers.authorization.split(' ')[1];
+      console.log("token ? ",req.body);
+      const token = req.body.token
+      //const token = req.headers.authorization.split(' ')[1];
       const id = jwt.verify(token, process.env.BCRYPT_KEY);
-         const user =  await  userSchema.find({_id:id.id})
+         const user =  await  userTrackingAppSchema.find({_id:id.id})
          if(user){
             return res.status(200).json(user[0])
          }
@@ -52,21 +54,18 @@ exports.verifyJWT = async (req, res) => {
     }
   };
 exports.getAllUsers= async (req,res)=>{
-  let user = await userSchema.findOne({ _id: req.decodeToken.id });
-  if (await accesControler("admin", user.role)) {
-    const users = await userSchema.find();
+    const users = await userTrackingAppSchema.find();
 
     return res.status(200).json(users);
-  } else {
     return res.status(403).json({ msg: "u dont have acces to this" });
-  }
+  
 }
 exports.modifyOneUser=async (req,res)=>{
-  let user = await userSchema.findOne({ _id: req.decodeToken.id });
+  let user = await userTrackingAppSchema.findOne({ _id: req.decodeToken.id });
   if (await accesControler("admin", user.role)) {
 
     try {
-      await userSchema.updateOne(
+      await userTrackingAppSchema.updateOne(
         { _id: req.body._id },
         { $set: req.body }
       ).then(()=>res.status(200).json({msg:"Le compte a bien ete modifié."}))
@@ -80,11 +79,8 @@ exports.modifyOneUser=async (req,res)=>{
   }
 }
 exports.deleteOne = async (req, res) => {
-  let user = await userSchema.findOne({ _id: req.decodeToken.id });
-  if (await accesControler("admin", user.role)) {
-    let deleteUser = await userSchema.deleteOne({ _id: req.params._id});
+ 
+    let deleteUser = await userTrackingAppSchema.deleteOne({ _id: req.params._id});
     return res.status(200).json({msg:"le compte a bien été supprimé."});
-  } else {
-    return res.status(403).json({ msg: "u dont have acces to this." });
-  }
+  
 };

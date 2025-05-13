@@ -10,6 +10,7 @@ var interventionSchemas = mongoose.Schema({
     codePostal:{type:String,required:true},
     state:{type:String,default:"En cours"},
     materials:{type:Array,default:[]},
+    modifiedMaterials:{type:Array,default:[]},
     contractNumber:{type:String,default:"XXXXXX"},
     startingDate:{type:String,require:true},
     endingDate:{type:String,require:false}

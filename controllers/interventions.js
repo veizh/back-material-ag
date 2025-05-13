@@ -48,6 +48,7 @@ exports.getOne = async (req, res) => {
     if (intervention) return res.status(200).json(intervention);
     return res.status(400).json({ err: "error", msg: "l'ID ne correspond pas" })
   } catch (error) {
+    return res.status(500).json({err:"We got a problem "})
   }
 
 }
@@ -55,7 +56,6 @@ exports.updateIntervention = async (req, res) => {
   try {
     let data = req.body
     delete data._id
-    console.log(data);
     const intervention = await interventionSchema.findByIdAndUpdate(req.params.id, data, {
       new: true,           // retourne le document modifié
       runValidators: true, // applique les validations du schema
@@ -74,7 +74,7 @@ exports.updateIntervention = async (req, res) => {
 
 }
 
-exports.transfer = async (req, res) => {
+exports.transfer = async (req, res,next) => {
   let siteA = req.body.siteA
   let siteB = req.body.siteB
   let idA  = req.body.siteA._id
@@ -117,10 +117,7 @@ exports.transfer = async (req, res) => {
   if (!newSiteA) {
     return res.status(404).json({ msg: "Intervention non trouvé." });
   }
-    return res.status(200).json({
-      msg: "intervention mise à jour avec succès.",
-      sitesModifiés: {siteA:siteA,siteB:siteB},
-    })
+    next()
   
   }
   catch (error) {

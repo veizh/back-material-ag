@@ -7,9 +7,9 @@ var router = express.Router();
 router.post("/create",users.create)
 router.post('/login',users.login)
 router.put('/modifyOneUser',auth,users.modifyOneUser)
-router.get('/getAllUsers',auth,users.getAllUsers)
+router.get('/getAllUsers',users.getAllUsers)
 router.post('/auth',users.verifyJWT)
-router.delete('/deleteOne/:_id',auth,users.deleteOne)
+router.delete('/deleteOne/:_id',users.deleteOne)
 // authorize route to roll
 
 module.exports = router;
