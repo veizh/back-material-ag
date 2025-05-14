@@ -1,7 +1,9 @@
 
 const interventionSchema = require("../models/intervention.js");
 const clientsSchema = require("../models/client.js");
+const transfersSchema = require('../models/transfers.js')
 const { accesControler } = require('../util/access');
+const { ObjectId } = require('mongodb');
 const { createClient } = require("./clients.js");
 require("dotenv").config();
 exports.create = async (req, res) => {
@@ -73,7 +75,74 @@ exports.updateIntervention = async (req, res) => {
   }
 
 }
+exports.getAllTransfer= async(req,res)=>{
+ try {
+    // Récupérer l'intervention par son ID
+    let intervention = await interventionSchema.findById(req.params.id);
 
+    // Chercher les transferts liés à l'ID du sender
+    const transfers = await transfersSchema.find({"sender.0._id": ObjectId(req.params.id)});
+    
+    // Tableau pour tous les matériaux transférés
+    let allMaterialsTransfered = [];
+
+    // Fonction pour mettre à jour la quantité de matériaux dans le tableau
+    function updateMaterials(arr, newMaterial) {
+      // Cherche si un matériau avec la même référence existe déjà dans le tableau
+      const existingMaterial = arr.find(item => item.ref === newMaterial.ref);
+
+      if (existingMaterial) {
+        // Si le matériau existe déjà, on incrémente la quantité
+        existingMaterial.quantity = (parseInt(existingMaterial.quantity) + parseInt(newMaterial.quantity)).toString();
+      } else {
+        // Sinon, on ajoute le nouveau matériau au tableau
+        arr.push(newMaterial);
+      }
+    }
+
+    // Traitement des transferts de matériaux
+    transfers.forEach(e => {
+      e.materials.forEach(item => {
+        updateMaterials(allMaterialsTransfered, item);
+      });
+    });
+
+    // Traitement des matériaux de l'intervention
+    intervention.materials.forEach(e => {
+      updateMaterials(allMaterialsTransfered, e);
+    });
+
+    // Mise à jour des matériaux de l'intervention
+    intervention.materials = allMaterialsTransfered;
+    intervention.state = "Terminé";
+    intervention.endingDate=req.body.endingDate
+    let returned = req.body.materialsReturned
+    // Sauvegarde de l'intervention mise à jour
+    const updatedIntervention = await intervention.save();
+    returned.map(async (e)=>{
+   await fetch("http://localhost:3600/products/returnFromInter/"+e.ref,{
+       method: "PUT",
+            headers: {
+                "Accept": "*/*",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(e)
+    })
+})
+    // Retourner l'intervention mise à jour
+    res.status(200).json(updatedIntervention);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Erreur lors de la mise à jour des matériaux', error });
+  }
+
+return res.status(200).json()
+
+
+
+
+}
 exports.transfer = async (req, res,next) => {
   let siteA = req.body.siteA
   let siteB = req.body.siteB

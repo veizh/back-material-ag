@@ -9,6 +9,7 @@ router.post("/create",interventions.create)
 router.get('/getAllInterventions',interventions.getAllInterventions)
 router.get('/getOne/:id',interventions.getOne)
 router.put('/updateIntervention/:id',interventions.updateIntervention)
+router.put('/getAllTransfer/:id',interventions.getAllTransfer)
 router.put('/transferMaterial',interventions.transfer,transfers.create)
 // authorize route to roll
 
