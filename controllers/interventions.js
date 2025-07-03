@@ -10,16 +10,6 @@ exports.create = async (req, res) => {
   try {
     const { clientData, intervention } = req.body;
 
-    // Vérifier si le client existe
-    let client = await clientsSchema.findOne(clientData);
-
-    if (client) {
-      console.log("Client déjà enregistré.");
-    } else {
-      console.log("Client non trouvé, création en cours...");
-      client = new clientsSchema(clientData);
-      await client.save();
-    }
 
     // Créer l'intervention avec le client lié
     const newIntervention = new interventionSchema({
