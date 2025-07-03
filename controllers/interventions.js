@@ -196,3 +196,8 @@ exports.transfer = async (req, res,next) => {
 
 
 }
+exports.deleteOne = async (req, res) => {
+    let deleteUser = await interventionSchema.deleteOne({ _id: req.params._id});
+    return res.status(200).json({msg:"le compte a bien été supprimé."});
+ 
+};

@@ -11,6 +11,7 @@ router.get('/getOne/:id',interventions.getOne)
 router.put('/updateIntervention/:id',interventions.updateIntervention)
 router.put('/getAllTransfer/:id',interventions.getAllTransfer)
 router.put('/transferMaterial',interventions.transfer,transfers.create)
+router.delete('/deleteOne/:_id',interventions.deleteOne)
 // authorize route to roll
 
 module.exports = router;

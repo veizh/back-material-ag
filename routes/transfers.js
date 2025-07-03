@@ -7,6 +7,7 @@ var router = express.Router();
 router.post("/create",transfers.create)
 router.get('/getAll',transfers.getAll)
 router.get('/getOne/:id',transfers.getOne)
+router.delete('/deleteOne/:_id',transfers.deleteOne)
 //router.put('/transferMaterial',transfers.transfer)
 // authorize route to roll
 
