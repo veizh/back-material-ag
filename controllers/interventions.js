@@ -120,7 +120,7 @@ exports.getAllTransfer= async(req,res)=>{
     // Sauvegarde de l'intervention mise à jour
     const updatedIntervention = await intervention.save();
     returned.map(async (e)=>{
-   await fetch("https://stock-ag-back.vercel.app/products/returnFromInter/"+e.ref,{
+   await fetch("https://stock-ag-back.vercel.app/products/returnFromInter/"+e._id,{
        method: "PUT",
             headers: {
                 "Accept": "*/*",
