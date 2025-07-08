@@ -8,13 +8,11 @@ const { createClient } = require("./clients.js");
 require("dotenv").config();
 exports.create = async (req, res) => {
   try {
-    const { clientData, intervention } = req.body;
 
 
     // Créer l'intervention avec le client lié
     const newIntervention = new interventionSchema({
-      ...intervention,
-      clientId: client._id, // important : lier l'intervention au client
+      ...req.body
     });
 
     await newIntervention.save();
